@@ -1,3 +1,6 @@
+body{
+    position: relative;
+}
 input{
     width:"200px";
     height:"30px"
@@ -9,22 +12,42 @@ label{
 
 button{
     width:"50px";
-    height:"30px"
+    height:"30px";
+    display: block;
 }
 
 p{
     font-size: 30px;
 }
 
+main{
+    width: 100%;
+}
+
 .lista{
     background-color: azure;
+    display: grid;
+    grid-template-columns: repeat(auto-fit,400px);
+    justify-content: center;
+    align-content: center;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    gap: 10px;
 }
 
 ul{
-    margin-bottom: 30px;
-    background-color: aqua;
+    background-color: rgb(201, 224, 253);
     padding: 20px;
     list-style: none;
+    border-radius: 5px;
+    max-height: 100%;
+}
+
+
+.lista>li{
+    box-shadow: 0 3px 4px grey;
+    border-radius: 5px;
 }
 
 .excluir{
@@ -39,4 +62,54 @@ ul{
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.modulo-excluir{
+    max-width: 400px;
+    height: 150px;
+    border: 2px solid  rgb(21, 48, 123);
+    border-radius: 4px;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top:35vh;
+    left: 34vw;
+    z-index: 5;
+    background-color: azure;
+}
+
+.modulo-excluir p{
+    font-size: 1.3rem;
+    padding: 10px;
+}
+
+.modulo-excluir div{
+    width: 200px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.modulo-excluir button{
+    padding: 5px 15px;
+    color:white;
+    background-color: rgb(192, 39, 12);
+    cursor: pointer;
+}
+
+.modulo-excluir #modulo-sim{
+    background-color: green;
+}
+
+
+.mostrar{
+    display: flex
+}
+
+.estilo-nome{
+    color: rgb(21, 48, 123);
+    font-size: 1.3rem;
+    font-weight: bold;
+    font-family:Arial, Helvetica, sans-serif
 }
