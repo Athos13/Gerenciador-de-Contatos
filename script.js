@@ -2,7 +2,7 @@ const campoNome = document.getElementById("nome")
 const campoEmail = document.getElementById("email")
 const campoTel = document.getElementById("telefone")
 const body = document.getElementsByTagName("body")[0]
-const botao = document.getElementsByTagName("button")[0]
+const form = document.getElementsByTagName("form")[0]
 const modulo = document.getElementsByClassName("modulo-excluir")
 const botaoSimModulo=document.getElementById("modulo-sim")
 const botaoNaoModulo=document.getElementById("modulo-nao")
@@ -26,7 +26,6 @@ function pegaDadosUl(){
 
 
 
-
 body.addEventListener('load', recuperaDadosGerais())
 function recuperaDadosGerais(){
     let arrayFinal = JSON.parse(window.localStorage.getItem("array"))
@@ -34,20 +33,45 @@ function recuperaDadosGerais(){
 } 
 
 
-
+//recria lis dando link correto ou conteudo de texto, conforme o index do dado(1 e 2 são email e tel)
 function recriaLis(array){
     if(array){   
-        array.map((item)=>{
+        array.map((arrayFilho)=>{ //map no array principal
     
             let liLista = document.createElement("li") 
-            liLista.classList.add(item[3])
+            liLista.classList.add(arrayFilho[3])
             let ulItem = document.createElement("ul")
     
-        if(item){        
-            item.map((item)=>{
+        if(arrayFilho){         
+            arrayFilho.map((item)=>{  //map nos arrays internos
         
-            if(!item.includes("id-")){
+            if(!item.includes("id-")){  //evita criar li para o código do cadastro atual
+            if(arrayFilho.indexOf(item)==1){
             let li=document.createElement("li"); 
+            let link=document.createElement("a"); 
+            link.href=`mailto:${item}`
+            link.textContent=item
+            li.appendChild(link)
+            
+            ulItem.appendChild(li)
+            liLista.appendChild(ulItem)
+            lista.appendChild(liLista)
+            }
+            
+            else if(arrayFilho.indexOf(item)==2){
+            let li=document.createElement("li"); 
+            let link=document.createElement("a"); 
+            link.href=`tel:${item}`
+            link.textContent=item
+            li.appendChild(link)
+            
+            ulItem.appendChild(li)
+            liLista.appendChild(ulItem)
+            lista.appendChild(liLista)
+            }
+            
+            else{
+           let li=document.createElement("li"); 
             let textLi=document.createTextNode(item); 
             li.appendChild(textLi)
             
@@ -55,9 +79,8 @@ function recriaLis(array){
             liLista.appendChild(ulItem)
             lista.appendChild(liLista)
             ulItem.firstChild.classList.add("estilo-nome")
-        }
+            }}
         })
-    
             let botaoExcluir = document.createElement("button")
             botaoExcluir.innerText="excluir"
             botaoExcluir.classList.add("excluir")
@@ -95,25 +118,30 @@ paiUlBotao.remove()
 
 
 
+
 //adiciona dados dos inputs a ul como lis
-botao.addEventListener("click", function(event){
+form.addEventListener("submit", function(event){
     event.preventDefault()
     arrayDadosInput=[campoNome.value.toUpperCase(), campoEmail.value, campoTel.value, "id-"+Math.random().toFixed(3)*10]
 
+    //criando a li da lista, dando sua classe com código dela
     let liLista = document.createElement("li")
     liLista.classList.add(arrayDadosInput[3])
-    
     let ulItem = document.createElement("ul")
 
+    //criando botão de escluir, adicionando sua classe, adiciono seu evento e eventListener não botões sim/não
     let botaoExcluir = document.createElement("button")
     botaoExcluir.innerText="excluir"
     botaoExcluir.classList.add("excluir")
+
     botaoExcluir.addEventListener("click", (event)=>{
         modulo[0].classList.add("mostrar")
+
         botaoSimModulo.addEventListener("click",()=>{
-            exclui(event)
-            modulo[0].classList.remove("mostrar")
+            exclui(event)// chama função excluir com event referenciando qual botão, de qual li, chamou o evento inicial
+            modulo[0].classList.remove("mostrar")//acessa classlist do htmlColection do modulo e adiciona a classe
         })
+    
         botaoNaoModulo.addEventListener("click",()=>{
         modulo[0].classList.remove("mostrar")
         })
@@ -122,32 +150,55 @@ botao.addEventListener("click", function(event){
 
     arrayDadosInput.map((item)=>{
         if(arrayDadosInput.indexOf(item)!==3){
-            let li=document.createElement("li"); 
-            let textLi=document.createTextNode(item); 
-            li.appendChild(textLi)
-
-            
-            ulItem.appendChild(li)
-            liLista.appendChild(ulItem)
-            lista.appendChild(liLista)
-        }
+            if(arrayDadosInput.indexOf(item)==1){
+                let li=document.createElement("li"); 
+                let link=document.createElement("a"); 
+                link.href=`mailto:${item}`
+                link.textContent=item
+                li.appendChild(link)
+                
+                ulItem.appendChild(li)
+                liLista.appendChild(ulItem)
+                lista.appendChild(liLista)
+                }
+                
+                else if(arrayDadosInput.indexOf(item)==2){
+                let li=document.createElement("li"); 
+                let link=document.createElement("a"); 
+                link.href=`tel:${item}`
+                link.textContent=item
+                li.appendChild(link)
+                
+                ulItem.appendChild(li)
+                liLista.appendChild(ulItem)
+                lista.appendChild(liLista)
+                }
+                
+                else{
+               let li=document.createElement("li"); 
+                let textLi=document.createTextNode(item); 
+                li.appendChild(textLi)
+                
+                ulItem.appendChild(li)
+                liLista.appendChild(ulItem)
+                lista.appendChild(liLista)
+                ulItem.firstChild.classList.add("estilo-nome")
+                }
+            }
         ulItem.firstChild.classList.add("estilo-nome")
     })
-
     ulItem.appendChild(botaoExcluir)
     pegaDadosUl()
-
-    
     campoNome.focus()
-
 }) 
+
 
 
 //Ordena em ordem alfabetica e não alfabetica
 let selectOrdem = document.getElementsByTagName("select")[0]
 
  selectOrdem.addEventListener("change", function(event){
-    selectOrdem.value=event.target.value
+    selectOrdem.value=event.target.value //da valor do option selecionado ao select
 
     let array=JSON.parse(window.localStorage.getItem("array"))
 
@@ -177,7 +228,11 @@ let selectOrdem = document.getElementsByTagName("select")[0]
                 }
             break;
     
+            default:
+                recriaLis(array)// recria as lis com base no array do localStorage, ou seja, na ordem de criação
         }
+
+
     })
     lista.innerText="" //remove todos os elementos filhos da .lista
     recriaLis(ordenado) //recria as lis no ordenamento escolhido
