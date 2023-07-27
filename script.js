@@ -6,9 +6,15 @@ const campoLinkedin = document.getElementById("linkedin")
 
 const body = document.getElementsByTagName("body")[0]
 const form = document.getElementsByTagName("form")[0]
-const modulo = document.getElementsByClassName("modulo-excluir")
+const moduloExcluir = document.getElementsByClassName("modulo-excluir")
 const botaoSimModulo=document.getElementById("modulo-sim")
-const botaoNaoModulo=document.getElementById("modulo-nao")
+const botaoNaoModulo=document.getElementById("modulo-nao") 
+
+const moduloEditar=document.getElementsByClassName("modulo-editar")
+const inputsEditar=document.querySelectorAll(".modulo-editar input")//pega inputs do moduloEditar
+
+
+
 
 let selectOrdem = document.getElementsByTagName("select")[0]
 let lista = document.getElementsByTagName("ul")[0] //ul original
@@ -16,7 +22,8 @@ let arrayDadosInput  //guarda dados de cada input naquele cadastro momentaneo
 let arrayDeArray=[] //busca dados e junta com o novo dado, e é salvo no localStorage
 
 
-//adiciona dados dos inputs a ul como lis
+
+//adiciona dados dos inputs a ul como lis, e os botões 
 form.addEventListener("submit", function(event){
     event.preventDefault()
     arrayDadosInput=[
@@ -33,25 +40,30 @@ form.addEventListener("submit", function(event){
     liLista.classList.add(arrayDadosInput[3])
     let ulItem = document.createElement("ul")
 
-    //criando botão de escluir, adicionando sua classe, adiciono seu evento e eventListener não botões sim/não
+    //criando botão de escluir, adicionando sua classe, adiciono seu evento e eventListener nos botões sim/não
     let botaoExcluir = document.createElement("button")
     botaoExcluir.innerText="excluir"
     botaoExcluir.classList.add("excluir")
 
-    botaoExcluir.addEventListener("click", (event)=>{
-        modulo[0].classList.add("mostrar")
+    botaoExcluir.addEventListener("click",(event)=>{
+        moduloExcluir[0].classList.add("mostrar")
 
         botaoSimModulo.addEventListener("click",()=>{
-            exclui(event)// chama função excluir com event referenciando qual botão, de qual li, chamou o evento inicial
-            modulo[0].classList.remove("mostrar")//acessa classlist do htmlColection do modulo e adiciona a classe
+            exclui(event) // chama função excluir com event referenciando qual botão, de qual li, chamou o evento inicial
+            moduloExcluir[0].classList.remove("mostrar")//acessa classlist do htmlColection do modulo e adiciona a classe
         })
-    
+        
         botaoNaoModulo.addEventListener("click",()=>{
-        modulo[0].classList.remove("mostrar")
+            moduloExcluir[0].classList.remove("mostrar")
         })
         
     })
 
+    //cria botão editar 
+    let botaoEditar = document.createElement("button")
+    botaoEditar.innerText="editar"
+    botaoEditar.classList.add("editar") 
+    //testa qual index do item, e baseado nele cria o elemento html adequado e anexa a ul do item
     arrayDadosInput.map((item)=>{
         if(arrayDadosInput.indexOf(item)!==3){
             if(arrayDadosInput.indexOf(item)==1){
@@ -106,7 +118,50 @@ form.addEventListener("submit", function(event){
             }
         ulItem.firstChild.classList.add("estilo-nome")
     })
-    ulItem.appendChild(botaoExcluir)
+    
+    ulItem.appendChild(botaoExcluir)//adiciona o botão excluir a ul do item
+
+    ulItem.appendChild(botaoEditar)//adiciona o botão excluir a ul do item
+    let todosBotoesEditar = document.querySelectorAll(".editar") //seleciona todos os botões editar
+    console.log("ao adicionar", todosBotoesEditar)
+
+    
+/*adiciona função em todos os botões abrindo modulo de editar, faz loop e insere dados já existentes como value dos inputs.
+ PROBLEMA !!! Se por exemplo o valor de instagram não existir no registro ele da o valor do próximo(linkedin) no campo delete.*/
+    todosBotoesEditar.forEach((botao)=>{
+        botao.addEventListener("click",(event)=>{
+            moduloEditar[0].classList.add("mostrar")
+            console.log(event.target)
+
+            let ulBotaoEditar=event.target.parentNode//ul pai do botão
+            let paiUlBotaoEditar = ulBotaoEditar.parentNode//li da .lista (pai da ul do botão)
+            let idLiEditar=paiUlBotaoEditar.classList[0] //valor da classe id    
+            
+            let todasLisDoItem = Array.from(paiUlBotaoEditar.querySelectorAll("li"))//todas as lis do item clicado
+            console.log(todasLisDoItem)
+            
+            //PROBLEMA !!! Ele só faz as atribuições de valor se index for o 3, então quando temos tando o instagram quanto o linkedin,(3 e 4) ele não faz com o 4 
+            for(let i=0; i<todasLisDoItem.length;i++){
+                if(todasLisDoItem.indexOf(todasLisDoItem[i])===3){
+                    if(todasLisDoItem[i].textContent==="Linkedin"){
+                      inputsEditar[i].value=""
+                      inputsEditar[i+1].value=todasLisDoItem[i].firstChild.href
+
+                        console.log(todasLisDoItem[i].textContent)
+                    }else{
+                        inputsEditar[i].value=todasLisDoItem[i].firstChild.href
+
+                    }
+                }
+                else{
+                    inputsEditar[i].value=todasLisDoItem[i].textContent
+
+                }
+            }
+
+        })
+    })
+//chama função que salva dados no localStorare, reseta campos do form, bota campoNome do form em foco
     salvaDadosUl()
     form.reset()
     campoNome.focus()
@@ -135,6 +190,7 @@ let arrayFinal = JSON.parse(window.localStorage.getItem("array"))
 let arrayFiltrado = arrayFinal.filter((item) => item[3] !== idLi )
 window.localStorage.setItem("array",JSON.stringify(arrayFiltrado))
 paiUlBotao.remove()
+
 }
 
 
@@ -206,20 +262,62 @@ function recriaLis(array){
             botaoExcluir.innerText="excluir"
             botaoExcluir.classList.add("excluir")
             botaoExcluir.addEventListener("click", (event)=>{
-                modulo[0].classList.add("mostrar")
+                moduloExcluir[0].classList.add("mostrar")
                 botaoSimModulo.addEventListener("click",()=>{
                     exclui(event)
-                    modulo[0].classList.remove("mostrar")
+                    moduloExcluir[0].classList.remove("mostrar")
                 })
                 botaoNaoModulo.addEventListener("click",()=>{
-                modulo[0].classList.remove("mostrar")
+                moduloExcluir[0].classList.remove("mostrar")
                 })
             })
-            ulItem.appendChild(botaoExcluir)
+
+
+
+            let botaoEditar = document.createElement("button")
+            botaoEditar.innerText="editar"
+            botaoEditar.classList.add("editar")
     
+            ulItem.appendChild(botaoExcluir)
+            ulItem.appendChild(botaoEditar)//adiciona o botão excluir a ul do item
+            let todosBotoesEditar = document.querySelectorAll(".editar") //seleciona todos os botões editar
+            console.log("ao adicionar", todosBotoesEditar)
+
+            /*adiciona função em todos os botões abrindo modulo de editar, faz loop e insere dados já existentes como value dos inputs.*/
+            todosBotoesEditar.forEach((botao)=>{
+                botao.addEventListener("click",(event)=>{
+                    moduloEditar[0].classList.add("mostrar")
+                    console.log(event.target)
+
+                    let ulBotaoEditar=event.target.parentNode//ul pai do botão
+                    let paiUlBotaoEditar = ulBotaoEditar.parentNode//li da .lista (pai da ul do botão)
+                    let idLiEditar=paiUlBotaoEditar.classList[0] //valor da classe id    
+                    
+                    let todasLisDoItem = Array.from(paiUlBotaoEditar.querySelectorAll("li"))//todas as lis do item clicado
+                    console.log(todasLisDoItem)
+                    
+                    //PROBLEMA !!! Ele só faz as atribuições de valor se index for o 3, então quando temos tando o instagram quanto o linkedin,(3 e 4) ele não faz com o 4 
+                    for(let i=0; i<todasLisDoItem.length;i++){
+                        if(todasLisDoItem.indexOf(todasLisDoItem[i])===3){
+                            if(todasLisDoItem[i].textContent==="Linkedin"){
+                              inputsEditar[i].value=""
+                              inputsEditar[i+1].value=todasLisDoItem[i].firstChild.href
+                            }else{
+                              inputsEditar[i].value=todasLisDoItem[i].firstChild.href
+                            }
+                        }
+                        else{
+                            inputsEditar[i].value=todasLisDoItem[i].textContent
+        
+                        }
+                    }
+
+                })
+            })
+            
         }
         })
-    }
+   }
 }
 
 
@@ -228,6 +326,7 @@ body.addEventListener('load', recuperaDadosGerais())
 function recuperaDadosGerais(){
     let arrayFinal = JSON.parse(window.localStorage.getItem("array"))
     recriaLis(arrayFinal)  
+
 } 
 
 

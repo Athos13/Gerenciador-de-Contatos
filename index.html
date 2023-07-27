@@ -48,13 +48,41 @@
         </article>
     </main>
 
-    <div class="modulo-excluir">
+    <section class="modulo-excluir">
         <p>Você realmente quer excluir esse registro ?</p>
         <div>
             <button id="modulo-nao">Não</button>
             <button id="modulo-sim">Sim</button>    
         </div>
-    </div>
+    </section>
+
+    <section>
+        <form class="modulo-editar">
+            <div class="div1-editar">
+                <label for="nome">Nome</label>
+                <input required type="text" id="nome" name="nome" value="">
+        
+                <label for="email">Email</label>
+                <input required type="email" id="email" name="email" placeholder="seuemail.@gmail.com" value="">
+        
+                <label for="telefone">Telefone</label>
+                <input required type="tel" id="telefone" name="telefone" placeholder="(00)000000000" value="">
+        
+            </div>
+            <div class="div2-editar">
+                <label for="instagram">Instagram</label>
+                <input type="text" id="instagram" name="instagram" placeholder="opcional">
+
+                <label for="linkedin">Linkedin</label>
+                <input type="text" id="linkedin" name="linkedin" placeholder="opcional">
+            
+                <button style="grid-column: 2;">Salvar</button>
+                <button style="grid-column: 2;">Cancelar</button>
+            </div>
+            
+        </form>
+
+    </section>
     
     <script src="script.js"></script>
 </body>
