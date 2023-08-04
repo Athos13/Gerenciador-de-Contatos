@@ -126,8 +126,7 @@ form.addEventListener("submit", function(event){
     console.log("ao adicionar", todosBotoesEditar)
 
     
-/*adiciona função em todos os botões abrindo modulo de editar, faz loop e insere dados já existentes como value dos inputs.
- PROBLEMA !!! Se por exemplo o valor de instagram não existir no registro ele da o valor do próximo(linkedin) no campo delete.*/
+/*adiciona função em todos os botões abrindo modulo de editar, faz loop e insere dados já existentes como value dos inputs.*/
     todosBotoesEditar.forEach((botao)=>{
         botao.addEventListener("click",(event)=>{
             moduloEditar[0].classList.add("mostrar")
@@ -140,25 +139,25 @@ form.addEventListener("submit", function(event){
             let todasLisDoItem = Array.from(paiUlBotaoEditar.querySelectorAll("li"))//todas as lis do item clicado
             console.log(todasLisDoItem)
             
-            //PROBLEMA !!! Ele só faz as atribuições de valor se index for o 3, então quando temos tando o instagram quanto o linkedin,(3 e 4) ele não faz com o 4 
-            for(let i=0; i<todasLisDoItem.length;i++){
-                if(todasLisDoItem.indexOf(todasLisDoItem[i])===3){
-                    if(todasLisDoItem[i].textContent==="Linkedin"){
-                      inputsEditar[i].value=""
-                      inputsEditar[i+1].value=todasLisDoItem[i].firstChild.href
-
-                        console.log(todasLisDoItem[i].textContent)
-                    }else{
-                        inputsEditar[i].value=todasLisDoItem[i].firstChild.href
-
+            /*testa se é o index 3 das lis do item, se for testa se conteudo é Linkedin, se for da o valor do input de mesmo index como vazio,
+            dou esse valor de href do link filho da li como o valor do próximo input(inputsEditar[i+1].value=todasLisDoItem[i].firstChild.href)
+            */
+                   for(let i=0; i<todasLisDoItem.length;i++){
+                        if(todasLisDoItem.indexOf(todasLisDoItem[i])===3){
+                            if(todasLisDoItem[i].textContent==="Linkedin"){
+                              inputsEditar[i].value=""
+                              inputsEditar[i+1].value=todasLisDoItem[i].firstChild.href
+                            }else{
+                              inputsEditar[i].value=todasLisDoItem[i].firstChild.href
+                            }
+                        }
+                        else if(todasLisDoItem.indexOf(todasLisDoItem[i])===4){
+                            inputsEditar[i].value=todasLisDoItem[i].firstChild.href
+                        }
+                        else{
+                            inputsEditar[i].value=todasLisDoItem[i].textContent
+                        }
                     }
-                }
-                else{
-                    inputsEditar[i].value=todasLisDoItem[i].textContent
-
-                }
-            }
-
         })
     })
 //chama função que salva dados no localStorare, reseta campos do form, bota campoNome do form em foco
@@ -306,9 +305,11 @@ function recriaLis(array){
                               inputsEditar[i].value=todasLisDoItem[i].firstChild.href
                             }
                         }
+                        else if(todasLisDoItem.indexOf(todasLisDoItem[i])===4){
+                            inputsEditar[i].value=todasLisDoItem[i].firstChild.href
+                        }
                         else{
                             inputsEditar[i].value=todasLisDoItem[i].textContent
-        
                         }
                     }
 
