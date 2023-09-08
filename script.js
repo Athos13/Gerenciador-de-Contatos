@@ -15,7 +15,6 @@ const inputsEditar=document.querySelectorAll(".modulo-editar input")//pega input
 
 
 
-
 let selectOrdem = document.getElementsByTagName("select")[0]
 let lista = document.getElementsByTagName("ul")[0] //ul original
 let arrayDadosInput  //guarda dados de cada input naquele cadastro momentaneo
@@ -95,7 +94,7 @@ form.addEventListener("submit", function(event){
                     if(item!==""){
                     let li=document.createElement("li"); 
                     let link=document.createElement("a"); 
-                    arrayDadosInput.indexOf(item)==4?link.textContent="Instagram":link.textContent="Linkedin"
+                    item.includes("instagram")?link.textContent="Instagram":link.textContent="Linkedin"
                     link.href=item
                     
                     li.appendChild(link)
@@ -123,22 +122,19 @@ form.addEventListener("submit", function(event){
 
     ulItem.appendChild(botaoEditar)//adiciona o botão excluir a ul do item
     let todosBotoesEditar = document.querySelectorAll(".editar") //seleciona todos os botões editar
-    console.log("ao adicionar", todosBotoesEditar)
 
     
 /*adiciona função em todos os botões abrindo modulo de editar, faz loop e insere dados já existentes como value dos inputs.*/
     todosBotoesEditar.forEach((botao)=>{
         botao.addEventListener("click",(event)=>{
             moduloEditar[0].classList.add("mostrar")
-            console.log(event.target)
 
             let ulBotaoEditar=event.target.parentNode//ul pai do botão
             let paiUlBotaoEditar = ulBotaoEditar.parentNode//li da .lista (pai da ul do botão)
             let idLiEditar=paiUlBotaoEditar.classList[0] //valor da classe id    
             
             let todasLisDoItem = Array.from(paiUlBotaoEditar.querySelectorAll("li"))//todas as lis do item clicado
-            console.log(todasLisDoItem)
-            
+            //console.log(todasLisDoItem)
             /*testa se é o index 3 das lis do item, se for testa se conteudo é Linkedin, se for da o valor do input de mesmo index como vazio,
             dou esse valor de href do link filho da li como o valor do próximo input(inputsEditar[i+1].value=todasLisDoItem[i].firstChild.href)
             */
@@ -157,7 +153,57 @@ form.addEventListener("submit", function(event){
                         else{
                             inputsEditar[i].value=todasLisDoItem[i].textContent
                         }
+                    } 
+                    
+            
+            let editarSalvar = document.querySelector(".modulo-editar .editar-salvar")
+            editarSalvar.addEventListener("click", (event)=>{
+                event.preventDefault()
+                
+                
+                let arrayStorage=JSON.parse(window.localStorage.getItem("array"))
+                let valFinalInputs = []
+                let arrayDadosInput = Array.from(inputsEditar)
+                
+                 arrayDadosInput.forEach((item)=>{
+                    valFinalInputs.push(item.value)
+                })
+                
+                
+                //reordena o array abrindo espaço para inserir o id no index 3
+                if(valFinalInputs[4] && valFinalInputs[3]!=="") valFinalInputs[5]=valFinalInputs[4]
+                if(valFinalInputs[3]) valFinalInputs[4]=valFinalInputs[3]
+                valFinalInputs[3]=idLiEditar
+                valFinalInputs.forEach((item)=>{
+                    if (item===null){
+                        item=""
                     }
+                })
+
+                arrayStorage.forEach(item => {
+
+                    if (item[3]===idLiEditar){
+                        for(let i=0; i<item.length; i++){
+                            if(item[i] !== valFinalInputs[i]){
+                                if(item.indexOf(item[i]) === 0){
+                                    item[i] = valFinalInputs[i].toUpperCase()
+                                }else{
+                                    item[i] = valFinalInputs[i]     
+                                }
+                            }
+                        }
+                        
+                window.localStorage.setItem("array", JSON.stringify(arrayStorage))
+                lista.innerText="" //remove todos os elementos filhos da .lista              
+                let arrayPosEditar=JSON.parse(window.localStorage.getItem("array"))
+                recriaLis(arrayPosEditar) //recria as lis no 
+                    }
+                })
+                
+            })
+
+            let editarCancelar = document.querySelector(".modulo-editar .editar-cancelar")
+            
         })
     })
 //chama função que salva dados no localStorare, reseta campos do form, bota campoNome do form em foco
@@ -205,7 +251,7 @@ function recriaLis(array){
         if(arrayFilho){         
             arrayFilho.map((item)=>{  //map nos arrays internos
         
-            if(!item.includes("id-")){  //evita criar li para o código do cadastro atual
+            if(item!==null && !item.includes("id-")){  //evita criar li para o código do cadastro atual
             if(arrayFilho.indexOf(item)==1){
             let li=document.createElement("li"); 
             let link=document.createElement("a"); 
@@ -234,7 +280,7 @@ function recriaLis(array){
                 if(item!==""){
                     let li=document.createElement("li"); 
                     let link=document.createElement("a"); 
-                    arrayFilho.indexOf(item)==4?link.textContent="Instagram":link.textContent="Linkedin"
+                    item.includes("instagram")?link.textContent="Instagram":link.textContent="Linkedin"
                     link.href=item
                     
                     li.appendChild(link)
@@ -280,20 +326,19 @@ function recriaLis(array){
             ulItem.appendChild(botaoExcluir)
             ulItem.appendChild(botaoEditar)//adiciona o botão excluir a ul do item
             let todosBotoesEditar = document.querySelectorAll(".editar") //seleciona todos os botões editar
-            console.log("ao adicionar", todosBotoesEditar)
+            
 
             /*adiciona função em todos os botões abrindo modulo de editar, faz loop e insere dados já existentes como value dos inputs.*/
             todosBotoesEditar.forEach((botao)=>{
                 botao.addEventListener("click",(event)=>{
                     moduloEditar[0].classList.add("mostrar")
-                    console.log(event.target)
+                  
 
                     let ulBotaoEditar=event.target.parentNode//ul pai do botão
                     let paiUlBotaoEditar = ulBotaoEditar.parentNode//li da .lista (pai da ul do botão)
                     let idLiEditar=paiUlBotaoEditar.classList[0] //valor da classe id    
                     
                     let todasLisDoItem = Array.from(paiUlBotaoEditar.querySelectorAll("li"))//todas as lis do item clicado
-                    console.log(todasLisDoItem)
                     
                     //PROBLEMA !!! Ele só faz as atribuições de valor se index for o 3, então quando temos tando o instagram quanto o linkedin,(3 e 4) ele não faz com o 4 
                     for(let i=0; i<todasLisDoItem.length;i++){
@@ -312,6 +357,53 @@ function recriaLis(array){
                             inputsEditar[i].value=todasLisDoItem[i].textContent
                         }
                     }
+
+            let editarSalvar = document.querySelector(".modulo-editar .editar-salvar")
+            editarSalvar.addEventListener("click", (event)=>{
+                event.preventDefault()
+
+                let arrayStorage=JSON.parse(window.localStorage.getItem("array"))
+                let valFinalInputs = []
+                let arrayDadosInput = Array.from(inputsEditar)
+                
+
+                 arrayDadosInput.forEach((item)=>{
+                    valFinalInputs.push(item.value)
+                })
+
+                //reordena o array abrindo espaço para inserir o id no index 3
+                if(valFinalInputs[4] && valFinalInputs[3]!=="") valFinalInputs[5]=valFinalInputs[4]
+                if(valFinalInputs[3]) valFinalInputs[4]=valFinalInputs[3]
+                valFinalInputs[3]=idLiEditar
+                valFinalInputs.forEach((item)=>{
+                    if (item===null){
+                        item=""
+                    }
+                })
+
+                arrayStorage.forEach(item => {
+                    if (item[3]===idLiEditar){
+                        for(let i=0; i<item.length; i++){
+                            if(item[i] !== valFinalInputs[i]){
+                                if(item.indexOf(item[i]) === 0){
+                                    item[i] = valFinalInputs[i].toUpperCase()
+                                }else{
+                                    item[i] = valFinalInputs[i]     
+                                }
+                            }
+                        }
+                    
+                window.localStorage.setItem("array", JSON.stringify(arrayStorage))
+                lista.innerText="" //remove todos os elementos filhos da .lista              
+                let arrayPosEditar=JSON.parse(window.localStorage.getItem("array"))
+                recriaLis(arrayPosEditar) //recria as lis no 
+                    }
+                })
+                
+            })
+
+            let editarCancelar = document.querySelector(".modulo-editar .editar-cancelar")
+            
 
                 })
             })
