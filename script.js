@@ -9,10 +9,8 @@ const form = document.getElementsByTagName("form")[0]
 const moduloExcluir = document.getElementsByClassName("modulo-excluir")
 const botaoSimModulo=document.getElementById("modulo-sim")
 const botaoNaoModulo=document.getElementById("modulo-nao") 
-
 const moduloEditar=document.getElementsByClassName("modulo-editar")
 const inputsEditar=document.querySelectorAll(".modulo-editar input")//pega inputs do moduloEditar
-
 
 
 let selectOrdem = document.getElementsByTagName("select")[0]
@@ -44,7 +42,8 @@ form.addEventListener("submit", function(event){
     botaoExcluir.innerText="excluir"
     botaoExcluir.classList.add("excluir")
 
-    botaoExcluir.addEventListener("click",(event)=>{
+    /** CODIGO ATUAL, FUNCIONANDO EXCLUSÃO DE FORMA ERRADA
+     *  botaoExcluir.addEventListener("click",(event)=>{
         moduloExcluir[0].classList.add("mostrar")
 
         botaoSimModulo.addEventListener("click",()=>{
@@ -56,8 +55,9 @@ form.addEventListener("submit", function(event){
             moduloExcluir[0].classList.remove("mostrar")
         })
         
-    })
-
+    }) */
+    
+   
     //cria botão editar 
     let botaoEditar = document.createElement("button")
     botaoEditar.innerText="editar"
@@ -123,7 +123,32 @@ form.addEventListener("submit", function(event){
     ulItem.appendChild(botaoEditar)//adiciona o botão excluir a ul do item
     let todosBotoesEditar = document.querySelectorAll(".editar") //seleciona todos os botões editar
 
+/** TESTE DE RESOLUÇÃO DO PROBLEMA DE EXCLUIR, DANDO ERRADO
+ * 
+
+*/
+    let botoesExcluir = document.querySelectorAll(".excluir")
     
+    botoesExcluir.forEach((botao)=>{
+        botao.addEventListener("click",function funcaoExcluir(event){
+            moduloExcluir[0].classList.add("mostrar")
+    
+            botaoSimModulo.addEventListener("click", excluirBotaoSim) 
+
+            function excluirBotaoSim(){
+                exclui(event) // chama função excluir com event referenciando qual botão, de qual li, chamou o evento inicial
+                moduloExcluir[0].classList.remove("mostrar")//acessa classlist do htmlColection do modulo e adiciona a classe
+            }
+            
+            botaoNaoModulo.addEventListener("click", ()=>{
+                botaoSimModulo.removeEventListener("click", excluirBotaoSim)
+                moduloExcluir[0].classList.remove("mostrar")
+            })
+
+        })
+    
+    }) 
+
 /*adiciona função em todos os botões abrindo modulo de editar, faz loop e insere dados já existentes como value dos inputs.*/
     todosBotoesEditar.forEach((botao)=>{
         botao.addEventListener("click",(event)=>{
@@ -134,7 +159,7 @@ form.addEventListener("submit", function(event){
             let idLiEditar=paiUlBotaoEditar.classList[0] //valor da classe id    
             
             let todasLisDoItem = Array.from(paiUlBotaoEditar.querySelectorAll("li"))//todas as lis do item clicado
-            //console.log(todasLisDoItem)
+            
             /*testa se é o index 3 das lis do item, se for testa se conteudo é Linkedin, se for da o valor do input de mesmo index como vazio,
             dou esse valor de href do link filho da li como o valor do próximo input(inputsEditar[i+1].value=todasLisDoItem[i].firstChild.href)
             */
@@ -155,9 +180,8 @@ form.addEventListener("submit", function(event){
                         }
                     } 
                     
-            
             let editarSalvar = document.querySelector(".modulo-editar .editar-salvar")
-            editarSalvar.addEventListener("click", (event)=>{
+            editarSalvar.addEventListener("click", function(event){
                 event.preventDefault()
                 
                 
@@ -180,6 +204,7 @@ form.addEventListener("submit", function(event){
                     }
                 })
 
+               
                 arrayStorage.forEach(item => {
 
                     if (item[3]===idLiEditar){
@@ -192,7 +217,8 @@ form.addEventListener("submit", function(event){
                                 }
                             }
                         }
-                        
+                
+
                 window.localStorage.setItem("array", JSON.stringify(arrayStorage))
                 lista.innerText="" //remove todos os elementos filhos da .lista              
                 let arrayPosEditar=JSON.parse(window.localStorage.getItem("array"))
@@ -203,7 +229,11 @@ form.addEventListener("submit", function(event){
             })
 
             let editarCancelar = document.querySelector(".modulo-editar .editar-cancelar")
-            
+            editarCancelar.addEventListener("click", ()=>{
+                
+                moduloEditar[0].classList.remove("mostrar")
+                
+            })
         })
     })
 //chama função que salva dados no localStorare, reseta campos do form, bota campoNome do form em foco
@@ -241,6 +271,7 @@ paiUlBotao.remove()
 
 //recria lis dando link correto ou conteudo de texto, conforme o index do dado(1 e 2 são email e tel)
 function recriaLis(array){
+
     if(array){   
         array.map((arrayFilho)=>{ //map no array principal
     
