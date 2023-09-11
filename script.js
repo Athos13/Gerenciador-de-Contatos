@@ -163,8 +163,9 @@ form.addEventListener("submit", function(event){
                         }
                     } 
                     
-            //let editarSalvar = document.querySelector(".modulo-editar .editar-salvar")
-            moduloEditar.addEventListener("submit", function(event){
+            
+            moduloEditar.addEventListener("submit", salvarAlteracao)
+            function salvarAlteracao(event){
                 event.preventDefault()
 
                 let arrayStorage=JSON.parse(window.localStorage.getItem("array"))
@@ -207,7 +208,7 @@ form.addEventListener("submit", function(event){
                     }
                 })
                 
-            })
+            }
 
         })
     })
@@ -373,8 +374,9 @@ function recriaLis(array){
                         }
                     }
 
-            let editarSalvar = document.querySelector(".modulo-editar .editar-salvar")
-            editarSalvar.addEventListener("click", (event)=>{
+            
+            moduloEditar.addEventListener("submit", salvarAlteracao)
+            function salvarAlteracao(event){
                 event.preventDefault()
 
                 let arrayStorage=JSON.parse(window.localStorage.getItem("array"))
@@ -417,7 +419,7 @@ function recriaLis(array){
                     }
                 })
                 
-            })
+            }
 
             })
          })
