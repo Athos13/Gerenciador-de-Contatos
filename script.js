@@ -6,10 +6,10 @@ const campoLinkedin = document.getElementById("linkedin")
 
 const body = document.getElementsByTagName("body")[0]
 const form = document.getElementsByTagName("form")[0]
-const moduloExcluir = document.getElementsByClassName("modulo-excluir")
+const moduloExcluir = document.getElementsByClassName("modulo-excluir")[0]
 const botaoSimModulo=document.getElementById("modulo-sim")
 const botaoNaoModulo=document.getElementById("modulo-nao") 
-const moduloEditar=document.getElementsByClassName("modulo-editar")
+const moduloEditar=document.getElementsByClassName("modulo-editar")[0]
 const inputsEditar=document.querySelectorAll(".modulo-editar input")//pega inputs do moduloEditar
 
 
@@ -42,20 +42,7 @@ form.addEventListener("submit", function(event){
     botaoExcluir.innerText="excluir"
     botaoExcluir.classList.add("excluir")
 
-    /** CODIGO ATUAL, FUNCIONANDO EXCLUSÃO DE FORMA ERRADA
-     *  botaoExcluir.addEventListener("click",(event)=>{
-        moduloExcluir[0].classList.add("mostrar")
-
-        botaoSimModulo.addEventListener("click",()=>{
-            exclui(event) // chama função excluir com event referenciando qual botão, de qual li, chamou o evento inicial
-            moduloExcluir[0].classList.remove("mostrar")//acessa classlist do htmlColection do modulo e adiciona a classe
-        })
-        
-        botaoNaoModulo.addEventListener("click",()=>{
-            moduloExcluir[0].classList.remove("mostrar")
-        })
-        
-    }) */
+   
     
    
     //cria botão editar 
@@ -123,26 +110,22 @@ form.addEventListener("submit", function(event){
     ulItem.appendChild(botaoEditar)//adiciona o botão excluir a ul do item
     let todosBotoesEditar = document.querySelectorAll(".editar") //seleciona todos os botões editar
 
-/** TESTE DE RESOLUÇÃO DO PROBLEMA DE EXCLUIR, DANDO ERRADO
- * 
 
-*/
     let botoesExcluir = document.querySelectorAll(".excluir")
-    
     botoesExcluir.forEach((botao)=>{
         botao.addEventListener("click",function funcaoExcluir(event){
-            moduloExcluir[0].classList.add("mostrar")
+            moduloExcluir.classList.add("mostrar")
     
             botaoSimModulo.addEventListener("click", excluirBotaoSim) 
 
             function excluirBotaoSim(){
                 exclui(event) // chama função excluir com event referenciando qual botão, de qual li, chamou o evento inicial
-                moduloExcluir[0].classList.remove("mostrar")//acessa classlist do htmlColection do modulo e adiciona a classe
+                moduloExcluir.classList.remove("mostrar")//acessa classlist do htmlColection do modulo e adiciona a classe
             }
             
             botaoNaoModulo.addEventListener("click", ()=>{
                 botaoSimModulo.removeEventListener("click", excluirBotaoSim)
-                moduloExcluir[0].classList.remove("mostrar")
+                moduloExcluir.classList.remove("mostrar")
             })
 
         })
@@ -152,7 +135,7 @@ form.addEventListener("submit", function(event){
 /*adiciona função em todos os botões abrindo modulo de editar, faz loop e insere dados já existentes como value dos inputs.*/
     todosBotoesEditar.forEach((botao)=>{
         botao.addEventListener("click",(event)=>{
-            moduloEditar[0].classList.add("mostrar")
+            moduloEditar.classList.add("mostrar")
 
             let ulBotaoEditar=event.target.parentNode//ul pai do botão
             let paiUlBotaoEditar = ulBotaoEditar.parentNode//li da .lista (pai da ul do botão)
@@ -180,15 +163,13 @@ form.addEventListener("submit", function(event){
                         }
                     } 
                     
-            let editarSalvar = document.querySelector(".modulo-editar .editar-salvar")
-            editarSalvar.addEventListener("click", function(event){
+            //let editarSalvar = document.querySelector(".modulo-editar .editar-salvar")
+            moduloEditar.addEventListener("submit", function(event){
                 event.preventDefault()
-                
-                
+
                 let arrayStorage=JSON.parse(window.localStorage.getItem("array"))
                 let valFinalInputs = []
                 let arrayDadosInput = Array.from(inputsEditar)
-                
                  arrayDadosInput.forEach((item)=>{
                     valFinalInputs.push(item.value)
                 })
@@ -206,7 +187,6 @@ form.addEventListener("submit", function(event){
 
                
                 arrayStorage.forEach(item => {
-
                     if (item[3]===idLiEditar){
                         for(let i=0; i<item.length; i++){
                             if(item[i] !== valFinalInputs[i]){
@@ -218,6 +198,7 @@ form.addEventListener("submit", function(event){
                             }
                         }
                 
+                moduloEditar.classList.remove("mostrar")
 
                 window.localStorage.setItem("array", JSON.stringify(arrayStorage))
                 lista.innerText="" //remove todos os elementos filhos da .lista              
@@ -228,14 +209,9 @@ form.addEventListener("submit", function(event){
                 
             })
 
-            let editarCancelar = document.querySelector(".modulo-editar .editar-cancelar")
-            editarCancelar.addEventListener("click", ()=>{
-                
-                moduloEditar[0].classList.remove("mostrar")
-                
-            })
         })
     })
+
 //chama função que salva dados no localStorare, reseta campos do form, bota campoNome do form em foco
     salvaDadosUl()
     form.reset()
@@ -279,7 +255,7 @@ function recriaLis(array){
             liLista.classList.add(arrayFilho[3])
             let ulItem = document.createElement("ul")
     
-        if(arrayFilho){         
+            if(arrayFilho){         
             arrayFilho.map((item)=>{  //map nos arrays internos
         
             if(item!==null && !item.includes("id-")){  //evita criar li para o código do cadastro atual
@@ -332,23 +308,11 @@ function recriaLis(array){
             
             }}
             ulItem.firstChild.classList.add("estilo-nome")
-        })
+            })
 
             let botaoExcluir = document.createElement("button")
             botaoExcluir.innerText="excluir"
             botaoExcluir.classList.add("excluir")
-            botaoExcluir.addEventListener("click", (event)=>{
-                moduloExcluir[0].classList.add("mostrar")
-                botaoSimModulo.addEventListener("click",()=>{
-                    exclui(event)
-                    moduloExcluir[0].classList.remove("mostrar")
-                })
-                botaoNaoModulo.addEventListener("click",()=>{
-                moduloExcluir[0].classList.remove("mostrar")
-                })
-            })
-
-
 
             let botaoEditar = document.createElement("button")
             botaoEditar.innerText="editar"
@@ -356,22 +320,42 @@ function recriaLis(array){
     
             ulItem.appendChild(botaoExcluir)
             ulItem.appendChild(botaoEditar)//adiciona o botão excluir a ul do item
-            let todosBotoesEditar = document.querySelectorAll(".editar") //seleciona todos os botões editar
-            
 
+
+
+            let botoesExcluir = document.querySelectorAll(".excluir")
+            botoesExcluir.forEach((botao)=>{
+                botao.addEventListener("click",function funcaoExcluir(event){
+                    moduloExcluir.classList.add("mostrar")
+    
+                    botaoSimModulo.addEventListener("click", excluirBotaoSim) 
+                    function excluirBotaoSim(){
+                        exclui(event) // chama função excluir com event referenciando qual botão, de qual li, chamou o evento inicial
+                        moduloExcluir.classList.remove("mostrar")//acessa classlist do htmlColection do modulo e adiciona a classe
+                    }
+                    
+                    botaoNaoModulo.addEventListener("click", ()=>{
+                        botaoSimModulo.removeEventListener("click", excluirBotaoSim)
+                        moduloExcluir.classList.remove("mostrar")
+                    })
+        
+                })
+            
+            }) 
+
+
+            let todosBotoesEditar = document.querySelectorAll(".editar") //seleciona todos os botões editar
             /*adiciona função em todos os botões abrindo modulo de editar, faz loop e insere dados já existentes como value dos inputs.*/
             todosBotoesEditar.forEach((botao)=>{
                 botao.addEventListener("click",(event)=>{
-                    moduloEditar[0].classList.add("mostrar")
-                  
-
+                    moduloEditar.classList.add("mostrar")
+            
                     let ulBotaoEditar=event.target.parentNode//ul pai do botão
                     let paiUlBotaoEditar = ulBotaoEditar.parentNode//li da .lista (pai da ul do botão)
                     let idLiEditar=paiUlBotaoEditar.classList[0] //valor da classe id    
                     
                     let todasLisDoItem = Array.from(paiUlBotaoEditar.querySelectorAll("li"))//todas as lis do item clicado
-                    
-                    //PROBLEMA !!! Ele só faz as atribuições de valor se index for o 3, então quando temos tando o instagram quanto o linkedin,(3 e 4) ele não faz com o 4 
+                     
                     for(let i=0; i<todasLisDoItem.length;i++){
                         if(todasLisDoItem.indexOf(todasLisDoItem[i])===3){
                             if(todasLisDoItem[i].textContent==="Linkedin"){
@@ -422,8 +406,10 @@ function recriaLis(array){
                                     item[i] = valFinalInputs[i]     
                                 }
                             }
-                        }
-                    
+                        }  
+
+                moduloEditar.classList.remove("mostrar")
+
                 window.localStorage.setItem("array", JSON.stringify(arrayStorage))
                 lista.innerText="" //remove todos os elementos filhos da .lista              
                 let arrayPosEditar=JSON.parse(window.localStorage.getItem("array"))
@@ -433,15 +419,12 @@ function recriaLis(array){
                 
             })
 
-            let editarCancelar = document.querySelector(".modulo-editar .editar-cancelar")
-            
-
-                })
             })
+         })
             
         }
-        })
-   }
+    })
+}
 }
 
 
