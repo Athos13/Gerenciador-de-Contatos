@@ -24,6 +24,7 @@ main{
     width: 100%;
     display: flex;
     flex-direction: column;
+    
 }
 
 form{
@@ -143,15 +144,19 @@ ul{
     background-color: green;
 }
 
+.container-editar{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 .modulo-editar{
-    position: fixed;
+    position: absolute;
     width: 500px;
     max-width: 600px;
     border: 2px solid  rgb(21, 48, 123);
     border-radius: 4px;
-    top:42vh;
-    left: 29vw;
+    top:50vh;
     z-index: 5;
     display: none;
     flex-direction: row;
@@ -175,4 +180,22 @@ ul{
     font-weight: bold;
     font-family:Arial, Helvetica, sans-serif;
     text-transform: uppercase;
+}
+
+
+@media(max-width:600px){
+    .modulo-editar{
+        width: 300px;
+        flex-direction: column;
+    }
+    .modulo-editar .div1-editar{
+        padding-bottom:0 ;
+    }
+    .modulo-editar .div2-editar{
+        padding-top: 0;
+    }
+    .modulo-editar input{
+        min-width: 90%;
+    }
+    
 }
