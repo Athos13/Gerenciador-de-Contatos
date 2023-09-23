@@ -118,8 +118,8 @@ ul{
     justify-content: center;
     align-items: center;
     position: fixed;
-    top:35vh;
-    left: 34vw;
+    top:33vh;
+    left: 33vw;
     z-index: 5;
     background-color: azure;
 }
@@ -153,12 +153,12 @@ ul{
 }
 
 .modulo-editar{
-    position: absolute;
+    position: fixed;
     width: 500px;
     max-width: 600px;
     border: 2px solid  rgb(21, 48, 123);
     border-radius: 4px;
-    top:50vh;
+    top:33vh;
     z-index: 5;
     display: none;
     flex-direction: row;
@@ -209,4 +209,21 @@ ul{
         margin: 0;
     }
 
+    .form-inserir{
+        max-width: 310px;
+    }
+    .form-inserir div{
+        width: 150px;
+    }
+    .form-inserir div input{
+        max-width: 100%;
+    }
+
+    .modulo-excluir{
+        left: 12vw;
+    }
+    .modulo-excluir p{
+        font-size: 1.1rem;
+        padding: 8px;
+    }
 }

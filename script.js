@@ -145,7 +145,7 @@ form.addEventListener("submit", function(event){
             
             /*testa se é o index 3 das lis do item, se for testa se conteudo é Linkedin, se for da o valor do input de mesmo index como vazio,
             dou esse valor de href do link filho da li como o valor do próximo input(inputsEditar[i+1].value=todasLisDoItem[i].firstChild.href)
-            */
+            */  
                    for(let i=0; i<todasLisDoItem.length;i++){
                         if(todasLisDoItem.indexOf(todasLisDoItem[i])===3){
                             if(todasLisDoItem[i].textContent==="Linkedin"){
