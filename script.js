@@ -135,6 +135,7 @@ form.addEventListener("submit", function(event){
 /*adiciona função em todos os botões abrindo modulo de editar, faz loop e insere dados já existentes como value dos inputs.*/
     todosBotoesEditar.forEach((botao)=>{
         botao.addEventListener("click",(event)=>{
+
             moduloEditar.classList.add("mostrar")
 
             let ulBotaoEditar=event.target.parentNode//ul pai do botão
@@ -166,8 +167,9 @@ form.addEventListener("submit", function(event){
             
             moduloEditar.addEventListener("submit", salvarAlteracao)
             function salvarAlteracao(event){
-                event.preventDefault()
 
+                event.preventDefault()
+                
                 let arrayStorage=JSON.parse(window.localStorage.getItem("array"))
                 let valFinalInputs = []
                 let arrayDadosInput = Array.from(inputsEditar)
@@ -204,9 +206,11 @@ form.addEventListener("submit", function(event){
                 window.localStorage.setItem("array", JSON.stringify(arrayStorage))
                 lista.innerText="" //remove todos os elementos filhos da .lista              
                 let arrayPosEditar=JSON.parse(window.localStorage.getItem("array"))
+
                 recriaLis(arrayPosEditar) //recria as lis no 
                     }
                 })
+                idLiEditar=""
                 
             }
 
@@ -248,7 +252,6 @@ paiUlBotao.remove()
 
 //recria lis dando link correto ou conteudo de texto, conforme o index do dado(1 e 2 são email e tel)
 function recriaLis(array){
-
     if(array){   
         array.map((arrayFilho)=>{ //map no array principal
     
@@ -349,6 +352,7 @@ function recriaLis(array){
             /*adiciona função em todos os botões abrindo modulo de editar, faz loop e insere dados já existentes como value dos inputs.*/
             todosBotoesEditar.forEach((botao)=>{
                 botao.addEventListener("click",(event)=>{
+
                     moduloEditar.classList.add("mostrar")
             
                     let ulBotaoEditar=event.target.parentNode//ul pai do botão
@@ -418,6 +422,7 @@ function recriaLis(array){
                 recriaLis(arrayPosEditar) //recria as lis no 
                     }
                 })
+            idLiEditar=""
                 
             }
 

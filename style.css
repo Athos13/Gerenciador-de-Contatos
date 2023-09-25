@@ -7,6 +7,7 @@ input{
     max-width: 200px;
     height:20px;
     margin-bottom: 8px;
+    font-size: 15px;
 }
 
 label{
@@ -36,7 +37,8 @@ form{
     grid-template-columns: 1fr 1fr;
     align-self: center;
     justify-content: space-around;
-    gap:10px
+    gap:10px;
+    
 }
 
 article{
@@ -70,6 +72,10 @@ ul{
     margin: 10px 0 ;
 }
 
+.lista :not(ul li :first-child){
+    font-size: 18px;
+}
+
 .lista ul li a{
     text-decoration: none;
 }
@@ -80,10 +86,10 @@ ul{
     background-color: rgb(201, 224, 253);
 }
 
-.excluir{
+ .excluir{
     width:70px;
     height: 20px;
-    font-size: 0.9rem;
+    font-size: 0.9rem !important;
     padding:15px;
     margin-top: 10px;
     border-radius: 4px;
@@ -97,7 +103,7 @@ ul{
 .editar{
     width:70px;
     height: 20px;
-    font-size: 0.9rem;
+    font-size: 0.9rem !important;
     padding:15px;
     margin-top: 10px;
     border-radius: 4px;
@@ -208,16 +214,33 @@ ul{
         grid-template-columns: 310px;
         margin: 0;
     }
+    
 
     .form-inserir{
         max-width: 310px;
+        margin-bottom: 26px;
     }
     .form-inserir div{
         width: 150px;
     }
     .form-inserir div input{
         max-width: 100%;
+        height: 27px; 
     }
+    
+    #ordenar{
+        height: 25px;
+        margin-bottom:12px;
+    }
+    label + #ordenar{
+        font-size: 19px;
+    }
+
+    label[for="ordenar"]{
+        font-size: 20px;
+    }
+
+
 
     .modulo-excluir{
         left: 12vw;
